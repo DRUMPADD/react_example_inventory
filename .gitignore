@@ -1,0 +1,10 @@
+node_modules/
+
+frontend/node_modules
+
+.vscode
+
+# Output directory
+dist
+
+.env
