@@ -1,9 +1,9 @@
 import {createPool} from 'mysql2/promise';
 
 export const pool = createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'react_stuck',
-    port: 3306,
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASSWORD_USER,
+    database: process.env.DATABASE,
+    port: process.env.PORT_DB,
 });
