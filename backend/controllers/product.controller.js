@@ -22,6 +22,19 @@ export const getProduct = async (req, res) => {
     }
 }
 
+export const getProductStock = async (req, res) => {
+    try {
+        const [result] = await pool.query("SELECT stuck FROM products where id = ?", [req.params.id]);
+        
+        if(result.length === 0) {
+            res.status(404).json("Product not found")
+        }
+        res.json(result[0]);
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+}
+
 export const createProduct = async (req, res) => {
     try {
         const {product_n, quantity} = req.body;
@@ -52,6 +65,32 @@ export const updateProduct = async (req, res) => {
         res.json(result);
     } catch (error) {
         res.status(500).json({ message: error });
+    }
+}
+
+export const deleteStock = async (req, res) => {
+    const {new_stuck} = req.body;
+    try {
+        const [result] = await pool.query("UPDATE products SET stuck = stuck - ? WHERE id = ?", [
+            new_stuck,
+            req.params.id
+        ])
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ message: error })
+    }
+}
+
+export const addStock = async (req, res) => {
+    const {new_stuck} = req.body;
+    try {
+        const [result] = await pool.query("UPDATE products SET stuck = stuck + ? WHERE id = ?", [
+            new_stuck,
+            req.params.id
+        ])
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ message: error })
     }
 }
 

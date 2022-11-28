@@ -20,7 +20,7 @@ export const getAllProviders = async (req, res) => {
 
 export const getProvider = async (req, res) => {
     try {
-        const [result] = await pool.query("SELECT * FROM Providers where prov = ?",
+        const [result] = await pool.query("SELECT name_prov, email, phone FROM Providers where prov = ?",
         req.params.id, (error, results, fields) => {
             if (error) return res.json({ message: error });
             console.log(results);
@@ -54,16 +54,13 @@ export const createProvider = async (req, res) => {
 
 export const updateProvider = async (req, res) => {
     try {
-        const [result] = await pool.query("UPDATE providers SET ? WHERE id = ?", [
+        const [result] = await pool.query("UPDATE providers SET ? WHERE prov = ?", [
             req.body,
             req.params.id
-        ], function (error, result, fields) {
-            if(error) return res.json(error);
-            console.log(result);
-        });
-
-        res.json(result);
+        ]);
+        return res.json(result);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: error });
     }
 }
@@ -71,7 +68,7 @@ export const updateProvider = async (req, res) => {
 export const deleteProvider = async (req, res) => {
     try {
         console.log(req.params.id);
-        const [result] = await pool.query("DELETE FROM providers WHERE id = ?", [req.params.id], function(error, result, fields) {
+        const [result] = await pool.query("DELETE FROM providers WHERE prov = ?", [req.params.id], function(error, result, fields) {
             if(error) return res.json(error);
             console.log(result);
         });
